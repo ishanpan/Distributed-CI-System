@@ -2,32 +2,36 @@
 
 source run_or_fail.sh
 
-bash rm -f .commit_id
+# delete previous hash
+rm -f .commit_hash
 
-run_or_fail "Repository folder not found" pushd $1 1> /dev/null
+# go to repo and update it to given commit
+run_or_fail "Repository folder not found!" pushd $1 1> /dev/null
 run_or_fail "Could not reset git" git reset --hard HEAD
 
-#extract commit ID 
-COMMIT=$(run_or_fail "Could not call 'git log' on repo" git log -n1)
-if[ $? != 0]; then
-    echo "Could not call 'git log' on repository"
-    exit 1
-fi
-COMMIT_ID=`echo $COMMIT | awk '{ print $2 }'`
-
-run_or_fail "Could not pull from repo" git pull
-
+# get the most recent commit
 COMMIT=$(run_or_fail "Could not call 'git log' on repository" git log -n1)
 if [ $? != 0 ]; then
   echo "Could not call 'git log' on repository"
   exit 1
 fi
+# get its hash
+HASH=`echo $COMMIT | awk '{ print $2 }'`
 
-NEW_COMMIT_ID=`echo $COMMIT | awk '{ print $2 }'`
+# update the repo
+run_or_fail "Could not pull from repository" git pull
 
-#check if OLD_COMMIT_ID AND NEW_COMMIT_ID match and write it to a file
+# get the most recent commit
+COMMIT=$(run_or_fail "Could not call 'git log' on repository" git log -n1)
+if [ $? != 0 ]; then
+  echo "Could not call 'git log' on repository"
+  exit 1
+fi
+# get its hash
+NEWHASH=`echo $COMMIT | awk '{ print $2 }'`
 
-if [ $NEW_COMMIT_ID != $COMMIT_ID ]; then
-    popd 1> /dev/null
-    echo $NEW_COMMIT_ID > .commit_id
+# if the hash changed, then write it to a file
+if [ $NEWHASH != $HASH ]; then
+  popd 1> /dev/null
+  echo $NEWHASH > .commit_id
 fi
