@@ -7,5 +7,5 @@ jobs:
       - name: my-step
         run: echo "Hello World!"
       - name: sleepy
-        run: Start-Sleep -s 30
+        run: Start-Sleep -s 180
         shell: powershell
