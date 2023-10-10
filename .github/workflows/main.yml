@@ -2,7 +2,7 @@ name: hello-world
 on: push
 jobs:
   my-job:
-    runs-on: [self-hosted, win, X64]
+    runs-on: [self-hosted, Windows, X64]
     steps:
       - name: my-step
         run: echo "Hello World!"
