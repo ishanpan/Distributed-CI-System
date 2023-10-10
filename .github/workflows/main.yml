@@ -1,7 +1,8 @@
-name: "Hello World"
-description: "Greet someone"
-runs:
-  using: "composite"
-  steps:
-    - run: Write-host 'Hello world'
-      shell: powershell
+name: hello-world
+on: push
+jobs:
+  my-job:
+    runs-on: [self-hosted, win, X64]
+    steps:
+      - name: my-step
+        run: echo "Hello World!"
