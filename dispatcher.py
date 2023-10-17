@@ -11,6 +11,7 @@ import time
 
 import helpers
 FORMAT  = 'utf-8'
+
 def dispatch_tests(server,commit_id):
     while True:
         print("Trying to dispatch to runners")
